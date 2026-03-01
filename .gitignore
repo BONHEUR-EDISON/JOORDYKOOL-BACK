@@ -1,0 +1,54 @@
+# Node modules & build outputs
+/node_modules
+/dist
+/build
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS & temp files
+.DS_Store
+.temp
+.tmp
+*.seed
+
+# Env files (sensitive)
+.env
+.env.*.local
+
+# Prisma
+/prisma/migrations
+/prisma/dev.db
+/generated/prisma
+
+# Testing & coverage
+/coverage
+/.nyc_output
+/jest-results.json
+
+# IDEs & editors
+/.idea
+*.sublime-workspace
+.project
+.classpath
+*.launch
+.settings/
+
+# VSCode settings (keep workspace config)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Node runtime files
+pids
+*.pid
+*.pid.lock
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

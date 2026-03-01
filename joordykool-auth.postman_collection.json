@@ -1,0 +1,52 @@
+{
+  "info": {
+    "name": "JoordyKool Auth",
+    "_postman_id": "e3d7f1f2-1234-5678-9101-abcdef123456",
+    "description": "Collection pour tester l'authentification OTP",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"Edison\",\n  \"lastName\": \"Bonheur\",\n  \"phone\": \"+250780000000\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": { "raw": "http://localhost:3000/auth/register", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["auth","register"] }
+      }
+    },
+    {
+      "name": "Verify OTP",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"phone\": \"+250780000000\",\n  \"otp\": \"123456\"\n}"
+        },
+        "url": { "raw": "http://localhost:3000/auth/verify", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["auth","verify"] }
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"phone\": \"+250780000000\"\n}"
+        },
+        "url": { "raw": "http://localhost:3000/auth/login", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["auth","login"] }
+      }
+    }
+  ]
+}
