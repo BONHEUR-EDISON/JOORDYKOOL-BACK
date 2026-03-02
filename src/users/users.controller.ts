@@ -1,49 +1,59 @@
-import { Controller, Get, Post, Param, Query, Body } from '@nestjs/common';
+// src/users/users.controller.ts
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './users.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  // ---------------------- Suggestions ----------------------
-  @Get('suggestions')
-  async getSuggestions(@Query('userId') userId: string) {
-    return this.userService.findAllSuggestions(userId);
+  @Get('top-users')
+  getTopUsers() {
+    return this.userService.getTopUsers();
   }
 
-  // ---------------------- Recherche ----------------------
+  @Get('suggestions')
+  getSmartSuggestions(@Req() req) {
+    return this.userService.smartSuggestions(req.user.id);
+  }
+
+  @Get('basic-suggestions')
+  getBasicSuggestions(@Req() req) {
+    return this.userService.basicSuggestions(req.user.id);
+  }
+
   @Get('search')
-  async searchUsers(@Query('query') query: string) {
+  searchUsers(@Query('query') query: string) {
     return this.userService.searchUsers(query);
   }
 
-  // ---------------------- Suivre un utilisateur ----------------------
   @Post(':id/follow')
-  async followUser(
-    @Param('id') targetId: string,
-    @Body('userId') userId: string,
-  ) {
-    return this.userService.followUser(userId, targetId);
+  toggleFollow(@Param('id') targetId: string, @Req() req) {
+    return this.userService.toggleFollow(req.user.id, targetId);
   }
 
-  // ---------------------- Profil par ID ----------------------
-  @Get(':id')
-  async getUserProfile(@Param('id') id: string) {
-    return this.userService.getUserById(id);
-  }
-
-  // ---------------------- Mettre à jour le statut en ligne ----------------------
   @Post(':id/online')
-  async setOnlineStatus(
-    @Param('id') userId: string,
-    @Body('online') online: boolean,
-  ) {
-    return this.userService.setUserOnlineStatus(userId, online);
+  setOnlineStatus(@Param('id') id: string, @Body('online') online: boolean) {
+    return this.userService.setUserOnlineStatus(id, online);
   }
 
-  // ---------------------- Nombre d'abonnements ----------------------
-  @Get(':id/subscriptions-count')
-  async getSubscriptionsCount(@Param('id') userId: string) {
-    return this.userService.getSubscriptionsCount(userId);
+  @Get(':id/follow-stats')
+  getFollowStats(@Param('id') id: string) {
+    return this.userService.getFollowStats(id);
+  }
+
+  @Get(':id')
+  getUserProfile(@Param('id') id: string) {
+    return this.userService.getUserById(id);
   }
 }

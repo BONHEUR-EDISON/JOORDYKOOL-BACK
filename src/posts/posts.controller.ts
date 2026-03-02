@@ -1,6 +1,19 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+// src/posts/posts.controller.ts
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Body,
+  Param,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { PostsService } from './posts.service';
+import { CreatePostDto } from './dto/create-post.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('posts')
 export class PostsController {
   constructor(private postsService: PostsService) {}
@@ -10,21 +23,37 @@ export class PostsController {
     return this.postsService.getAll();
   }
 
+  @Get(':id')
+  async getPost(@Param('id') id: string) {
+    return this.postsService.getById(id);
+  }
+
+  @Get('feed')
+  async getFeed(@Req() req) {
+    return this.postsService.getFeed(req.user.id);
+  }
+
   @Post()
-  async createPost(@Body() body: { userId: string; content: string }) {
-    return this.postsService.create(body.userId, body.content);
+  async createPost(@Body() dto: CreatePostDto, @Req() req) {
+    return this.postsService.create(req.user.id, dto);
   }
 
   @Post(':id/like')
-  async likePost(@Param('id') id: string, @Body() body: { userId: string }) {
-    return this.postsService.likePost(id, body.userId);
+  async likePost(@Param('id') id: string, @Req() req) {
+    return this.postsService.likePost(id, req.user.id);
   }
 
   @Post(':id/comment')
   async addComment(
     @Param('id') id: string,
-    @Body() body: { userId: string; content: string },
+    @Body('content') content: string,
+    @Req() req,
   ) {
-    return this.postsService.addComment(id, body.userId, body.content);
+    return this.postsService.addComment(id, req.user.id, content);
+  }
+
+  @Delete(':id')
+  async deletePost(@Param('id') id: string, @Req() req) {
+    return this.postsService.deletePost(id, req.user.id);
   }
 }

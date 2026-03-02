@@ -10,7 +10,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { Request } from 'express';
 
 @Injectable()
-export class JwtGuard implements CanActivate {
+export class JwtAuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private prisma: PrismaService,

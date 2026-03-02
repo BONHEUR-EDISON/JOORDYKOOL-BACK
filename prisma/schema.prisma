@@ -41,13 +41,18 @@ model RefreshToken {
 }
 
 model Post {
-  id        String    @id @default(uuid())
-  content   String
-  createdAt DateTime  @default(now())
-  userId    String
-  comments  Comment[]
-  likes     Like[]
-  user      User      @relation(fields: [userId], references: [id])
+  id         String    @id @default(uuid())
+  content    String
+  mediaUrl   String?
+  mediaType  String?   // "image" | "video"
+  isSponsored Boolean  @default(false)
+  priority   Int       @default(0) // publicité > amis
+  createdAt  DateTime  @default(now())
+  userId     String
+
+  comments   Comment[]
+  likes      Like[]
+  user       User      @relation(fields: [userId], references: [id])
 }
 
 model Comment {
@@ -82,8 +87,9 @@ model Follow {
   id          String @id @default(uuid())
   followerId  String
   followingId String
-  follower    User   @relation("Follower", fields: [followerId], references: [id])
-  following   User   @relation("Following", fields: [followingId], references: [id])
+
+  follower  User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
 
   @@unique([followerId, followingId])
 }
