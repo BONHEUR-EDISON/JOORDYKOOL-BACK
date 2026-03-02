@@ -11,12 +11,10 @@ async function bootstrap() {
 
   // Activer CORS
   app.enableCors({
-    origin: [
-      'http://localhost:3000', // dev local
-      'https://joordykool-front.vercel.app', // front prod
-      'https://joordykool.vercel.app/',
-    ],
+    origin: ['http://localhost:3000', 'https://joordykool.vercel.app'],
     credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
   });
 
   await app.listen(port);
