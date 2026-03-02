@@ -14,6 +14,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000', // dev local
       'https://joordykool-front.vercel.app', // front prod
+      'https://joordykool.vercel.app/',
     ],
     credentials: true,
   });
