@@ -13,7 +13,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000', // dev local
-      'https://joordykool-frontend.vercel.app', // front prod
+      'https://joordykool-front.vercel.app', // front prod
     ],
     credentials: true,
   });
